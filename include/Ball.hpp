@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "Position.hpp"
 #include "Style.hpp"
 
@@ -10,5 +11,6 @@ namespace TWC
     {
         Position position;
         Ball();
+        void print(std::ostream &os) const override;
     };
 };

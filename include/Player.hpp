@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "Position.hpp"
 #include "Style.hpp"
 #include "Ball.hpp"
@@ -39,7 +40,8 @@ namespace TWC
         Ball *focus;
 
     public:
-        Player() : role(PlayerRole::GOALKEEPER), position(Position(0, 0)), ball(nullptr) {}
+        Player() : role(PlayerRole::GOALKEEPER), position(Position(0, 0)), focus(nullptr) {}
+        ~Player() = default;
 
         Player &setRole(PlayerRole role);
         Player &setPosition(Position position);
@@ -48,6 +50,8 @@ namespace TWC
         PlayerRole getRole() const;
         Position getPosition() const;
         Ball *getFocus() const;
+
+        void print(std::ostream &os) const override;
 
         void move(Action action, Choice choice, int distance);
     };

@@ -1,5 +1,7 @@
 #include "../include/Style.hpp"
 
+#include <iostream>
+
 namespace TWC::Style
 {
     template <class derived>
@@ -20,10 +22,17 @@ namespace TWC::Style
         this->style = style;
         return static_cast<derived &>(*this);
     }
+
     template <class derived>
     derived &Representation<derived>::setRepresentation(const std::string &representation)
     {
         this->representation = representation;
         return static_cast<derived &>(*this);
+    }
+
+    template <class derived>
+    void Representation<derived>::draw() const
+    {
+        std::cout << *this;
     }
 };

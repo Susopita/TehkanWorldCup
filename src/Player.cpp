@@ -1,5 +1,7 @@
 #include "../include/Player.hpp"
 
+#include "../include/utility/iomap.hpp"
+
 namespace TWC
 {
     Player &Player::setRole(PlayerRole role)
@@ -21,6 +23,12 @@ namespace TWC
     PlayerRole Player::getRole() const { return role; }
     Position Player::getPosition() const { return position; }
     Ball *Player::getFocus() const { return focus; }
+
+    void Player::print(std::ostream &os) const
+    {
+        Utility::moveTo(position.x, position.y);
+        os << representation;
+    }
 
     void Player::move(Action action, Choice choice, int distance)
     {

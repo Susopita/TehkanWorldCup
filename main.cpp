@@ -24,7 +24,7 @@ const unordered_set<string> colors = {
 
 // Compilacion:
 // g++ -std=c++20 -I./include ./src/*.cpp main.cpp -o INIT
-// g++ -std=c++20 ./src/*.cpp main.cpp -o INIT && ./INIT BLACK GREEN
+// g++ -std=c++20 ./src/**.cpp ./src/utility/*.cpp ./src/themes/*.cpp main.cpp -o INIT && ./INIT RED BLUE
 
 int main(int argc, char const *argv[])
 {
@@ -39,16 +39,21 @@ int main(int argc, char const *argv[])
         }
         return 1;
     }
+
     if (argv[1] == argv[2])
     {
         cout << "Colores deben ser diferentes" << endl;
         return 1;
     }
+
     if (colors.find(argv[1]) == colors.end() || colors.find(argv[2]) == colors.end())
     {
         cout << "Color no soportado" << endl;
         return 1;
     }
-    TWC::Game({argv[1], argv[2]}).play();
+
+    TWC::Game init({argv[1], argv[2]});
+    init.play();
+
     return 0;
 }

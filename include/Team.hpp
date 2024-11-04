@@ -2,6 +2,8 @@
 
 #include "Player.hpp"
 #include "Coach.hpp"
+#include "Ball.hpp"
+#include "interfaces/Presenter.hpp"
 
 namespace TWC
 {
@@ -21,7 +23,7 @@ namespace TWC
         Formation() = default;
     };
 
-    class Team
+    class Team : public Graphics::Presenter
     {
         Player *teammates;
         int teamSize;
@@ -40,11 +42,16 @@ namespace TWC
         Team &setCoach(const Coach &coach);
         Team &setFormation(const Formation &formation);
         Team &setTeamSize(int teamSize);
+        Team &setFocus(Ball *ball);
+        Team &setColor(const std::string &color);
 
         Coach getCoach() const;
         Formation getFormation() const;
         int getTeamSize() const;
         Player *getTeammate() const;
+
+        // Implementación de la interfaz
+        void draw() override;
 
         // Para decidir el movimiento general del equipo en cada turno
         void operator++(); // Right

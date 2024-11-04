@@ -104,6 +104,7 @@ namespace TWC::Style
         Representation(const std::string &representation, Style style) : representation(representation), style(style) {}
         derived &setStyle(const Style &style);
         derived &setRepresentation(const std::string &representation);
+        void draw() const;
         virtual ~Representation() = default;
     };
 };

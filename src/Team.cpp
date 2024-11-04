@@ -46,6 +46,30 @@ namespace TWC
         createTeam();
         return *this;
     }
+    Team &Team::setFocus(Ball *ball)
+    {
+        for (int i = 0; i < teamSize; i++)
+        {
+            teammates[i].setFocus(ball);
+        }
+        return *this;
+    }
+    Team &Team::setColor(const std::string &color)
+    {
+        for (int i = 0; i < teamSize; i++)
+        {
+            teammates[i].setStyle({color, Style::ColorBackground::DEFAULT});
+        }
+        return *this;
+    }
+
+    void Team::draw()
+    {
+        for (int i = 0; i < teamSize; i++)
+        {
+            teammates[i].draw();
+        }
+    }
 
     Coach Team::getCoach() const { return coach; }
     Formation Team::getFormation() const { return formation; }
