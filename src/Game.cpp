@@ -4,6 +4,8 @@
 #include <limits>
 #include "../include/utility/iomap.hpp"
 #include "../include/themes/Defaults.hpp"
+#include "../include/utility/Actions.hpp"
+#include <vector>
 
 namespace TWC
 {
@@ -14,6 +16,9 @@ namespace TWC
         team1 = new Team();
         team2 = new Team();
 
+        std::vector<std::string> players1 = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"};
+        std::vector<std::string> players2 = {"L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V"};
+
         int rows = 51;
         int columns = 121;
 
@@ -23,16 +28,18 @@ namespace TWC
             .position = Position(columns / 2 - 2, rows / 2);
 
         team1->setCoach(Coach("Suso"))
-            .setFormation(Formation())
+            .setFormation(new Defaults::Formation1433(rows, columns))
             .setTeamSize(11)
             .setFocus(ball)
-            .setColor(Utility::mapColor(player1));
+            .setColor(Utility::mapColor(player1))
+            .setRepresentations(players1);
 
         team2->setCoach(Coach("Pita"))
-            .setFormation(Formation())
+            .setFormation(new Defaults::Formation1433(rows, columns, false))
             .setTeamSize(11)
             .setFocus(ball)
-            .setColor(Utility::mapColor(player2));
+            .setColor(Utility::mapColor(player2))
+            .setRepresentations(players2);
 
         campo->setColumns(columns)
             .setRows(rows)
@@ -87,16 +94,71 @@ namespace TWC
             Utility::update();
             std::cin >> select_player >> action >> choice >> distance >> team;
 
+            // Limpiear error
+            Utility::moveTo(2, campo->getRows() + 6);
+            Utility::printf("                 ");
+
             // Vaciar buffer
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
             // Manejo de entrada
             try
             {
+                // Salir del juego
                 if (select_player == "exit")
                     break;
+
+                // Validar el jugador seleccionado
+                if (select_player.size() > 1)
+                    throw std::invalid_argument("Player not found");
+                else if (turn ? 'A' > select_player[0] or select_player[0] > 'K' : 'L' > select_player[0] or select_player[0] > 'V')
+                    throw std::invalid_argument("Player not found");
+
+                auto playerFilter = select_player[0];
+
+                // Validar la acción
+                auto actionFilter = Actions::mapAction(action);
+
+                // Validar la elección
+                auto choiceFilter = Actions::mapChoice(choice);
+
+                // Validar formato de la distancia
+                int distanceFilter = std::stoi(distance);
+
+                // Validar accion de equipo
+                auto teamFilter = Actions::mapTeamAction(team);
+
+                // Realizar la acción
+                auto teammate = (turn ? team1 : team2)->getTeammate(playerFilter - (turn ? 'A' : 'L'));
+
+                // Colisiones
+                switch (choiceFilter)
+                {
+                case Actions::Choice::BALL:
+                    if (campo->ballIsOut(actionFilter, distanceFilter))
+                        throw std::invalid_argument("Ball out of bounds");
+                    break;
+                case Actions::Choice::PLAYER:
+                    if (campo->playerIsOut(teammate, actionFilter, distanceFilter))
+                        throw std::invalid_argument("Player out of bounds");
+                    break;
+                }
+
+                // Realizar la acción
+                teammate->move(actionFilter, choiceFilter, distanceFilter);
+
+                // Acciones de equipo
+                switch (teamFilter)
+                {
+                case Actions::TeamAction::RIGHT:
+                    (*(turn ? team1 : team2))++;
+                    break;
+                case Actions::TeamAction::LEFT:
+                    ++(*(turn ? team1 : team2));
+                    break;
+                }
             }
-            // Errores en la entrada
+            // Errores en la entrada o en la accion
             catch (const std::exception &e)
             {
                 Utility::moveTo(2, campo->getRows() + 6);
@@ -104,13 +166,6 @@ namespace TWC
                 repeat = true;
                 continue;
             }
-            // Errores en la lógica del juego
-            /*
-            catch (const std::exception &e)
-            {
-                Utility::moveTo(2, campo->getRows() + 5);
-                Utility::printf("Error: {}", e.what());
-            }*/
 
             campo->draw();
             ball->draw();
@@ -121,13 +176,22 @@ namespace TWC
             turn = !turn;
             repeat = false;
 
+            // Actualizar la pantalla
             Utility::update();
+
+            // Verificar si hay un gol
+            if (campo->isGoal())
+            {
+                Utility::moveTo(2, campo->getRows() + 6);
+                Utility::printf("Goal!");
+                break;
+            }
         }
     }
 
     Game::~Game()
     {
-        Utility::moveTo(0, campo->getRows() + 5);
+        Utility::moveTo(0, campo->getRows() + 7);
         Utility::printf("Liberando recursos...");
         Utility::printf("\n");
         delete campo;

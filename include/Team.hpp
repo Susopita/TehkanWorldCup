@@ -4,57 +4,47 @@
 #include "Coach.hpp"
 #include "Ball.hpp"
 #include "interfaces/Presenter.hpp"
+#include "utility/Actions.hpp"
+#include "Formation.hpp"
+#include <vector>
 
 namespace TWC
 {
-    enum class TeamAction
-    {
-        RIGHT,
-        LEFT
-    };
-
-    struct Formation
-    {
-        int goalkeeper = 1;
-        int defenders;
-        int midfielders;
-        int strikers;
-
-        Formation() = default;
-    };
 
     class Team : public Graphics::Presenter
     {
         Player *teammates;
+        Player *select;
         int teamSize;
-        Formation formation;
+        Formation *formation;
         Coach coach;
 
         void createTeam();
 
     public:
         Team() = default;
-        Team(Formation formation);
-        Team(int teamSize, Formation formation);
+        Team(Formation *formation);
+        Team(int teamSize, Formation *formation);
 
         ~Team();
 
         Team &setCoach(const Coach &coach);
-        Team &setFormation(const Formation &formation);
+        Team &setFormation(Formation *formation);
         Team &setTeamSize(int teamSize);
         Team &setFocus(Ball *ball);
         Team &setColor(const std::string &color);
+        Team &setRepresentations(const std::vector<std::string> &representations);
 
         Coach getCoach() const;
-        Formation getFormation() const;
+        Formation *getFormation();
         int getTeamSize() const;
-        Player *getTeammate() const;
+        Player *getTeammate(int);
 
         // Implementación de la interfaz
         void draw() override;
 
         // Para decidir el movimiento general del equipo en cada turno
-        void operator++(); // Right
-        void operator--(); // Left
+        void operator++(int); // Right
+        void operator++();    // Left
     };
 };

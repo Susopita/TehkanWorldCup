@@ -2,6 +2,7 @@
 
 #include "../FieldGame.hpp"
 #include "../Style.hpp"
+#include "../Formation.hpp"
 
 namespace TWC::Defaults
 {
@@ -22,5 +23,18 @@ namespace TWC::Defaults
         FieldGame() = default;
         ~FieldGame() override = default;
         void draw() override;
+    };
+
+    class Formation1433 : public TWC::Formation
+    {
+    public:
+        Formation1433(int rows, int columns, bool isLeft = true);
+
+        Position getGoalkeeper() const override;
+        std::vector<Position> getDefenders() const override;
+        std::vector<Position> getMidfielders() const override;
+        std::vector<Position> getStrikers() const override;
+
+        ~Formation1433() override = default;
     };
 };

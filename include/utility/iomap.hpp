@@ -19,6 +19,7 @@ namespace TWC::Utility
     std::string mapColor(const std::string &color);
 
     void update();
+
 } // namespace TWC::Utility
 
 #include "../../src/utility/iomap.tpp"

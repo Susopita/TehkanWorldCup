@@ -30,51 +30,64 @@ namespace TWC
         os << representation;
     }
 
-    void Player::move(Action action, Choice choice, int distance)
+    void Player::move(Actions::Action action, Actions::Choice choice, int distance)
     {
         switch (choice)
         {
-        case Choice::BALL:
+        case Actions::Choice::BALL:
             if (distance < 1 || distance > 40)
-                throw new std::invalid_argument("Distance must be between 1 and 40");
+                throw std::invalid_argument("Distance must be between 1 and 40");
             if (focus == nullptr)
-                throw new std::exception();
+                throw std::exception();
             else
             {
                 if (position.distance(focus->position) > 2)
-                    throw new std::invalid_argument("Distance must be less than 2");
+                    throw std::invalid_argument("Distance must be less than 2");
             }
             break;
-        case Choice::PLAYER:
+        case Actions::Choice::PLAYER:
             if (distance < 1 || distance > 10)
-                throw new std::invalid_argument("Distance must be between 1 and 10");
+                throw std::invalid_argument("Distance must be between 1 and 10");
             break;
         }
+        Utility::moveTo(position.x, position.y);
+        Utility::printf(" ");
         switch (action)
         {
-        case Action::DOWN:
+        case Actions::Action::DOWN:
+            position.y += distance;
+            break;
+
+        case Actions::Action::DOWNLEFT:
+            position.y += distance;
             position.x -= distance;
             break;
 
-        case Action::DOWNLEFT:
+        case Actions::Action::DOWNRIGHT:
+            position.y += distance;
+            position.x += distance;
             break;
 
-        case Action::DOWNRIGHT:
+        case Actions::Action::LEFT:
+            position.x -= distance;
             break;
 
-        case Action::LEFT:
+        case Actions::Action::RIGHT:
+            position.x += distance;
             break;
 
-        case Action::RIGHT:
+        case Actions::Action::UP:
+            position.y -= distance;
             break;
 
-        case Action::UP:
+        case Actions::Action::UPLEFT:
+            position.y -= distance;
+            position.x -= distance;
             break;
 
-        case Action::UPLEFT:
-            break;
-
-        case Action::UPRIGHT:
+        case Actions::Action::UPRIGHT:
+            position.y -= distance;
+            position.x += distance;
             break;
         }
     }

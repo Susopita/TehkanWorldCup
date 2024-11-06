@@ -25,6 +25,9 @@ namespace TWC
         FieldGame &setBall(Ball *ball);
         FieldGame &setTeam1(Team *team1);
         FieldGame &setTeam2(Team *team2);
+        bool isGoal() const;
+        bool ballIsOut(Actions::Action, const int &distance) const;
+        bool playerIsOut(Player *select, Actions::Action action, const int &distance) const;
         int getColumns() const;
         int getRows() const;
         virtual void draw() = 0;

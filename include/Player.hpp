@@ -4,6 +4,7 @@
 #include "Position.hpp"
 #include "Style.hpp"
 #include "Ball.hpp"
+#include "utility/Actions.hpp"
 
 namespace TWC
 {
@@ -13,24 +14,6 @@ namespace TWC
         DEFENDER,
         MIDFIELDER,
         STRIKER
-    };
-
-    enum class Action
-    {
-        UP,
-        UPRIGHT,
-        RIGHT,
-        DOWNRIGHT,
-        DOWN,
-        DOWNLEFT,
-        LEFT,
-        UPLEFT
-    };
-
-    enum class Choice
-    {
-        PLAYER,
-        BALL
     };
 
     class Player : public Style::Representation<Player>
@@ -53,7 +36,7 @@ namespace TWC
 
         void print(std::ostream &os) const override;
 
-        void move(Action action, Choice choice, int distance);
+        void move(Actions::Action action, Actions::Choice choice, int distance);
     };
 
 };
