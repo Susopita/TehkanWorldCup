@@ -27,7 +27,7 @@ namespace TWC
     void Player::print(std::ostream &os) const
     {
         Utility::moveTo(position.x, position.y);
-        os << representation;
+        os << style.applyStyle(representation);
     }
 
     void Player::move(Actions::Action action, Actions::Choice choice, int distance)
@@ -38,56 +38,121 @@ namespace TWC
             if (distance < 1 || distance > 40)
                 throw std::invalid_argument("Distance must be between 1 and 40");
             if (focus == nullptr)
-                throw std::exception();
-            else
-            {
-                if (position.distance(focus->position) > 2)
-                    throw std::invalid_argument("Distance must be less than 2");
-            }
+                throw std::invalid_argument("Focus is null");
+            else if (position.distance(focus->position) > 2)
+                throw std::invalid_argument("Distance must be less than 2: " + std::to_string(position.distance(focus->position)));
             break;
         case Actions::Choice::PLAYER:
             if (distance < 1 || distance > 10)
                 throw std::invalid_argument("Distance must be between 1 and 10");
             break;
         }
+
         Utility::moveTo(position.x, position.y);
         Utility::printf(" ");
+        Utility::moveTo(focus->position.x, focus->position.y);
+        Utility::printf(" ");
+
         switch (action)
         {
         case Actions::Action::DOWN:
-            position.y += distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.y = position.y + distance;
+                focus->position.x = position.x;
+            }
+            else
+            {
+                position.y += distance;
+            }
             break;
 
         case Actions::Action::DOWNLEFT:
-            position.y += distance;
-            position.x -= distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.y = position.y + distance;
+                focus->position.x = position.x - distance;
+            }
+            else
+            {
+                position.y += distance;
+                position.x -= distance;
+            }
             break;
 
         case Actions::Action::DOWNRIGHT:
-            position.y += distance;
-            position.x += distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.y = position.y + distance;
+                focus->position.x = position.x + distance;
+            }
+            else
+            {
+                position.y += distance;
+                position.x += distance;
+            }
             break;
 
         case Actions::Action::LEFT:
-            position.x -= distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.x = position.x - distance;
+                focus->position.y = position.y;
+            }
+            else
+            {
+                position.x -= distance;
+            }
             break;
 
         case Actions::Action::RIGHT:
-            position.x += distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.x = position.x + distance;
+                focus->position.y = position.y;
+            }
+            else
+            {
+                position.x += distance;
+            }
             break;
 
         case Actions::Action::UP:
-            position.y -= distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.y = position.y - distance;
+                focus->position.x = position.x;
+            }
+            else
+            {
+                position.y -= distance;
+            }
             break;
 
         case Actions::Action::UPLEFT:
-            position.y -= distance;
-            position.x -= distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.y = position.y - distance;
+                focus->position.x = position.x - distance;
+            }
+            else
+            {
+                position.y -= distance;
+                position.x -= distance;
+            }
             break;
 
         case Actions::Action::UPRIGHT:
-            position.y -= distance;
-            position.x += distance;
+            if (choice == Actions::Choice::BALL)
+            {
+                focus->position.y = position.y - distance;
+                focus->position.x = position.x + distance;
+            }
+            else
+            {
+                position.y -= distance;
+                position.x += distance;
+            }
             break;
         }
     }

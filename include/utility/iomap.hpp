@@ -2,6 +2,8 @@
 
 #include <string>
 #include <format>
+#include "../Position.hpp"
+#include "../Style.hpp"
 
 namespace TWC::Utility
 {
@@ -19,6 +21,24 @@ namespace TWC::Utility
     std::string mapColor(const std::string &color);
 
     void update();
+
+    enum class Seccion
+    {
+        COMPLETO,
+        MITAD_SUPERIOR,
+        MITAD_INFERIOR,
+        MITAD_DERECHA,
+        MITAD_IZQUIERDA
+    };
+
+    template <class T>
+    void drawLine(const Position &begin, const Position &end, const Style::Representation<T> &draw);
+
+    template <class T>
+    void drawRectangle(const Position &begin, const Position &end, const Style::Representation<T> &draw, Seccion seccion = Seccion::COMPLETO);
+
+    template <class T>
+    void drawCircle(const Position &position, const Position &radio, const Style::Representation<T> &draw, Seccion seccion = Seccion::COMPLETO);
 
 } // namespace TWC::Utility
 

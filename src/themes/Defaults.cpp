@@ -7,25 +7,24 @@ namespace TWC::Defaults
     // FieldGame
     void FieldGame::draw()
     {
-        for (int i = 0; i < columns; i++)
-        {
-            Utility::moveTo(i, 0);
-            BordeHorizontal.draw();
-        }
+        // Bordes
+        Utility::drawLine({0, 0}, {columns - 1, 0}, BordeHorizontal);
+        Utility::drawLine({0, rows - 1}, {columns - 1, rows - 1}, BordeHorizontal);
+        Utility::drawLine({0, 0}, {0, rows - 1}, BordeVertical);
+        Utility::drawLine({columns - 1, 0}, {columns - 1, rows - 1}, BordeVertical);
 
-        for (int i = 1; i < rows - 1; i++)
-        {
-            Utility::moveTo(0, i);
-            BordeVertical.draw();
-            Utility::moveTo(columns - 1, i);
-            BordeVertical.draw();
-        }
+        // Patrones
+        Utility::drawRectangle({-5, (rows - 13) / 2}, {5, (rows - 13) / 2 + 13}, Trazador, Utility::Seccion::MITAD_DERECHA);
+        Utility::drawRectangle({-10, (rows - 27) / 2}, {10, (rows - 27) / 2 + 27}, Trazador, Utility::Seccion::MITAD_DERECHA);
+        Utility::drawCircle({10 - 8, rows / 2 - 8}, {8, 8}, Trazador, Utility::Seccion::MITAD_DERECHA);
 
-        for (int i = 0; i < columns; i++)
-        {
-            Utility::moveTo(i, rows - 1);
-            BordeHorizontal.draw();
-        }
+        Utility::drawRectangle({columns - 5, (rows - 13) / 2}, {columns + 5, (rows - 13) / 2 + 13}, Trazador, Utility::Seccion::MITAD_IZQUIERDA);
+        Utility::drawRectangle({columns - 10, (rows - 27) / 2}, {columns + 10, (rows - 27) / 2 + 27}, Trazador, Utility::Seccion::MITAD_IZQUIERDA);
+        Utility::drawCircle({columns - 10 - 8, rows / 2 - 8}, {8, 8}, Trazador, Utility::Seccion::MITAD_IZQUIERDA);
+
+        Utility::drawCircle({columns / 2 - 9, rows / 2 - 9}, {9, 9}, Trazador);
+        Utility::drawLine({columns / 2, rows / 2 - 9}, {columns / 2, 0}, Trazador);
+        Utility::drawLine({columns / 2, rows / 2 + 9}, {columns / 2, rows}, Trazador);
     }
 
     // Formacion 1-4-3-3

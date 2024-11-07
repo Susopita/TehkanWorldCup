@@ -122,7 +122,7 @@ namespace TWC
     {
         for (int i = 0; i < teamSize; i++)
         {
-            if (teammates + i != select or !i)
+            if (teammates + i != select and i)
                 teammates[i].move(Actions::Action::RIGHT, Actions::Choice::PLAYER, 4);
         }
     } // Right
@@ -130,7 +130,7 @@ namespace TWC
     {
         for (int i = 0; i < teamSize; i++)
         {
-            if (teammates + i != select or !i)
+            if (teammates + i != select and i)
                 teammates[i].move(Actions::Action::LEFT, Actions::Choice::PLAYER, 4);
         }
     } // Left

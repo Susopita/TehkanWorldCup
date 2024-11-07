@@ -12,7 +12,7 @@ namespace TWC
         Position(int x, int y) : x(x), y(y) {}
         int distance(const Position &position) const
         {
-            return pow(abs(x - position.x) + abs(y - position.y), 2);
+            return sqrt(pow(x - position.x, 2) + pow(y - position.y, 2));
         }
     };
 };

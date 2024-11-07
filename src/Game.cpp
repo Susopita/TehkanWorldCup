@@ -20,12 +20,12 @@ namespace TWC
         std::vector<std::string> players2 = {"L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V"};
 
         int rows = 51;
-        int columns = 121;
+        int columns = 121; // -2=2 -> -1=1
 
         ball->setRepresentation("X")
             .setStyle({Style::ColorText::BLACK,
                        Style::ColorBackground::DEFAULT})
-            .position = Position(columns / 2 - 2, rows / 2);
+            .position = Position(columns / 2 - 6, rows / 2 - 1);
 
         team1->setCoach(Coach("Suso"))
             .setFormation(new Defaults::Formation1433(rows, columns))
@@ -162,7 +162,7 @@ namespace TWC
             catch (const std::exception &e)
             {
                 Utility::moveTo(2, campo->getRows() + 6);
-                Utility::printf("Operation Invalid");
+                Utility::printf("Operation Invalid -> {}", e.what());
                 repeat = true;
                 continue;
             }
