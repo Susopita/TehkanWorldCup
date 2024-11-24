@@ -23,7 +23,7 @@ const unordered_set<string> colors = {
     "BRIGHT_WHITE"};
 
 // Compilacion:
-// g++ -std=c++20 -I./include ./src/*.cpp main.cpp -o INIT
+// g++ -std=c++20 -I./include ./src/*.cpp ./src/utility/*.cpp ./src/themes/*.cpp main.cpp -o INIT
 // g++ -std=c++20 ./src/**.cpp ./src/utility/*.cpp ./src/themes/*.cpp main.cpp -o INIT && ./INIT RED BLUE
 
 int main(int argc, char const *argv[])
