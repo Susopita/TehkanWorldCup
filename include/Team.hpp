@@ -4,9 +4,9 @@
 #include "Coach.hpp"
 #include "Ball.hpp"
 #include "interfaces/Presenter.hpp"
-#include "utility/Actions.hpp"
 #include "Formation.hpp"
 #include <vector>
+#include <string>
 
 namespace TWC
 {
@@ -18,6 +18,7 @@ namespace TWC
         int teamSize;
         Formation *formation;
         Coach coach;
+        std::string color;
 
         void createTeam();
 
@@ -39,6 +40,7 @@ namespace TWC
         Formation *getFormation();
         int getTeamSize() const;
         Player *getTeammate(int);
+        std::string getColor() const;
 
         // Implementación de la interfaz
         void draw() override;

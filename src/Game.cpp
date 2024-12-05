@@ -6,6 +6,8 @@
 #include "../include/themes/Defaults.hpp"
 #include "../include/utility/Actions.hpp"
 #include <vector>
+#include <string>
+#include <algorithm>
 
 namespace TWC
 {
@@ -34,7 +36,7 @@ namespace TWC
             .setColor(Utility::mapColor(player1))
             .setRepresentations(players1);
 
-        team2->setCoach(Coach("Pita"))
+        team2->setCoach(Coach("Jeri"))
             .setFormation(new Defaults::Formation1433(rows, columns, false))
             .setTeamSize(11)
             .setFocus(ball)
@@ -77,6 +79,7 @@ namespace TWC
         std::string select_player, action, choice, distance, team;
         bool turn = true;
         bool repeat = false;
+        std::string errorSize{};
         while (true)
         {
 
@@ -96,7 +99,7 @@ namespace TWC
 
             // Limpiear error
             Utility::moveTo(2, campo->getRows() + 6);
-            Utility::printf("                 ");
+            Utility::printf("                     {}", errorSize);
 
             // Vaciar buffer
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -111,7 +114,7 @@ namespace TWC
                 // Validar el jugador seleccionado
                 if (select_player.size() > 1)
                     throw std::invalid_argument("Player not found");
-                else if (turn ? 'A' > select_player[0] or select_player[0] > 'K' : 'L' > select_player[0] or select_player[0] > 'V')
+                if (turn ? 'A' > select_player[0] or select_player[0] > 'K' : 'L' > select_player[0] or select_player[0] > 'V')
                     throw std::invalid_argument("Player not found");
 
                 auto playerFilter = select_player[0];
@@ -163,6 +166,8 @@ namespace TWC
             {
                 Utility::moveTo(2, campo->getRows() + 6);
                 Utility::printf("Operation Invalid -> {}", e.what());
+                errorSize = std::string(e.what());
+                std::fill(errorSize.begin(), errorSize.end(), ' ');
                 repeat = true;
                 continue;
             }
@@ -183,7 +188,8 @@ namespace TWC
             if (campo->isGoal())
             {
                 Utility::moveTo(2, campo->getRows() + 6);
-                Utility::printf("Goal!");
+                Utility::printf("Goal! {} TEAM WINS\nCONGRATULATIONS TO COACH {}", (turn ? team1 : team2)->getColor(), Utility::ToUpper((turn ? team1 : team2)->getCoach().name));
+                std::cin.get();
                 break;
             }
         }

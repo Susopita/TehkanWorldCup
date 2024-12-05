@@ -2,3 +2,6 @@ INIT
 .vscode/
 TEST
 test.cpp
+build/
+CMakeFiles/
+CMakeCache.txt

@@ -16,17 +16,17 @@ namespace TWC
         auto midfielders = formation->getMidfielders();
         auto strikers = formation->getStrikers();
 
-        for (int i = 1, j = 0; j < defenders.size(); i++, j++)
+        for (size_t i = 1, j = 0; j < defenders.size(); i++, j++)
         {
             teammates[i].setPosition(defenders[j]);
         }
 
-        for (int i = 1 + defenders.size(), j = 0; j < midfielders.size(); i++, j++)
+        for (size_t i = 1 + defenders.size(), j = 0; j < midfielders.size(); i++, j++)
         {
             teammates[i].setPosition(midfielders[j]);
         }
 
-        for (int i = 1 + defenders.size() + midfielders.size(), j = 0; j < strikers.size(); i++, j++)
+        for (size_t i = 1 + defenders.size() + midfielders.size(), j = 0; j < strikers.size(); i++, j++)
         {
             teammates[i].setPosition(strikers[j]);
         }
@@ -48,6 +48,7 @@ namespace TWC
         teammates = nullptr;
         delete formation;
         formation = nullptr;
+        select = nullptr;
     }
 
     Team &Team::setCoach(const Coach &coach)
@@ -79,6 +80,7 @@ namespace TWC
     }
     Team &Team::setColor(const std::string &color)
     {
+        this->color = color;
         for (int i = 0; i < teamSize; i++)
         {
             teammates[i].setStyle({color, Style::ColorBackground::DEFAULT});
@@ -88,7 +90,7 @@ namespace TWC
 
     Team &Team::setRepresentations(const std::vector<std::string> &representations)
     {
-        if (representations.size() != teamSize)
+        if (representations.size() != (size_t)teamSize)
         {
             throw std::invalid_argument("Representations must be the same size as the team");
         }
@@ -111,6 +113,7 @@ namespace TWC
     Coach Team::getCoach() const { return coach; }
     Formation *Team::getFormation() { return formation; }
     int Team::getTeamSize() const { return teamSize; }
+    std::string Team::getColor() const { return color; }
     Player *Team::getTeammate(int number)
     {
         this->select = teammates + number;
